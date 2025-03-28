@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Get all tasks and format them as a JSON array
-TASKS=$(/home/moneybot/scheduler/notion/api/query_notion_database.sh | jq -r '
+TASKS=$(./scheduler/notion/api/query_notion_database.sh | jq -r '
     .results[] |
     {
         name: (.properties["Project name"].title[0].plain_text // "Untitled"),
