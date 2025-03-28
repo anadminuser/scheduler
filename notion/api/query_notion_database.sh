@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Load API key from local .env file
-source ./scheduler/notion/api/.notion_env  # Ensure this path is correct
+source ./.notion_env  # Ensure this path is correct
 
 # Notion API version
 NOTION_VERSION="2022-06-28"
