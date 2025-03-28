@@ -1,2 +1,6 @@
-scheduler/googlecal/gcal_env*
-scheduler/googlecal/service.json
+googlecal/gcal_env*
+googlecal/service.json
+googlecal/.env
+notion/api/.notion_env
+notion/api-testing/.notion_env
+notion/api-testing/.teams_env
