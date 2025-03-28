@@ -31,12 +31,6 @@ jobs:
           name: scheduler
           path: release.zip
 
-      - name: ssh to instance and clear previous build
-        run: |
-          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/id_rsa moneybot@${{env.DEPLOYMENT_IP}} <<'EOF'
-          rm -rf ~/scheduler/*
-          EOF
-
       - name: SCP Files to the remote machine
         run: scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/id_rsa -v release.zip moneybot@${{env.DEPLOYMENT_IP}}:~/scheduler/release.zip
 
