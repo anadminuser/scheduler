@@ -1,0 +1,47 @@
+## Moneybot Environment
+
+# Script name
+name: Scheduler CI
+
+on:
+  push:
+    branches:
+      - main       ## Branch to pull from
+env:
+  # Put any variables you need for this script here.
+  # Add others to the Github environment. 
+  # Use secrets for keys that you can't show to people, the "secrets" context,
+  # and the "vars" context for ones that you can see safely
+  DEPLOYMENT_IP: 192.168.5.98
+
+jobs:
+  deploy:
+    runs-on: "self-hosted"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Compress Files
+        run: zip -r release.zip ./*
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: scheduler
+          path: release.zip
+
+      - name: ssh to instance and clear previous build
+        run: |
+          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/id_rsa moneybot@${{env.DEPLOYMENT_IP}} <<'EOF'
+          rm -rf ~/scheduler/*
+          EOF
+
+      - name: SCP Files to the remote machine
+        run: scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/id_rsa -v release.zip moneybot@${{env.DEPLOYMENT_IP}}:~/scheduler/release.zip
+
+      - name: ssh to instance and unzip
+        run: |
+          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/id_rsa moneybot@${{env.DEPLOYMENT_IP}} <<'EOF'
+          cd scheduler && unzip -o release.zip && rm -f release.zip
+          EOF
