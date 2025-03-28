@@ -1,6 +1,7 @@
 googlecal/gcal_env*
 googlecal/service.json
 googlecal/.env
+googlecal/.env
 notion/api/.notion_env
 notion/api-testing/.notion_env
 notion/api-testing/.teams_env
